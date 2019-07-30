@@ -1,0 +1,64 @@
+1.Pick the correct url syntax for handling Browser authentication in Selenium Webdriver
+a)	http://@url//username:password
+b)	http://username//password@url
+c)	http://username:password@url --------------------------------
+d)	http://@url:username:password
+
+2.Which one of the following is the correct syntax to pass testng paramters
+a)	@Parameters([ "suite-param" ])
+   	@Test
+	  public void prameterTestOne(String param) {
+	  System.out.println("Test one suite param is: " + param);
+	}
+b)	@Parameters( "suite-param", "test-three-param" )
+   	@Test
+	  public void prameterTestThree(String param, String paramTwo) {
+	  System.out.println("Test three suite param is: " + param);
+	  System.out.println("Test three param is: " + paramTwo);
+}
+c)	@Parameters({ "suite-param"; "test-three-param" })
+  	@Test
+  	public void prameterTestThree(String param, String paramTwo) {
+	  System.out.println("Test three suite param is: " + param);
+  	System.out.println("Test three param is: " + paramTwo);
+	}
+d)	@Parameters({ "suite-param", "test-three-param" }) -----------------------
+  	@Test
+	  public void prameterTestThree(String param, String paramTwo) {
+  	System.out.println("Test three suite param is: " + param);
+  	System.out.println("Test three param is: " + paramTwo);
+	}
+
+3. How to delete Cookies in Selenium Webdriver?
+a)	driver.manage.deleteAllCookie;
+b)	driver.manage().deleteAllCookies();----------------
+c)	driver.manage().deleteCookies();
+d)	driver.manage().deleteAllCookie();
+
+4.How many different type of  aruguments we can pass in handling frames in driver.switchTo().frame(argument);
+a)	1
+b)	2
+c)	3-------------------
+d)	4
+5.In the below testng.xml how many times @BeforeTest will be executed
+
+<suite name="Suite1" verbose="1" >
+
+  <test name="Regression1"   >
+
+<classes>
+
+      <class name="test.sample.ParameterSample"/>
+
+      <class name="test.sample.ParameterTest"/>
+
+    </classes>
+
+ </test>
+
+</suite>
+a)	1----------------
+b)	2
+c)	3
+d)	4
+
