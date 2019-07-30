@@ -1,0 +1,286 @@
+<-----------------------------------------------LOGIN PAGE--------------------------------------------->
+<div class="main-div bg-light mb-3">
+  <mat-card class="z-depth center" flex="50">
+      <mat-card-title class="title">Quiz Registration</mat-card-title><hr><br>
+     <div>
+      
+      <nav class="nav-item">
+          <ul>
+            <li class="for">Total questions: 40 </li>
+           <li class="nav-right for">Time Limit: 60minutes</li></ul>
+       </nav>
+      
+      </div>
+      <form (ngSubmit)="onSubmit()">
+         <div>
+           <label><b>UserName</b></label>
+          <div class="form-group col-md-6" [class.has-error]="userName.invalid && userName.touched" [class.has-success]="userName.valid">
+              <input type="text" [(ngModel)]="user.userName" #userName="ngModel" required name="userName" class="form-control" 
+              placeholder="User Name">
+              <span class="help-block" *ngIf="userName.errors?.required && userName.touched" class="alert alert-danger">
+                !User Name is required
+              </span>
+            </div>
+          </div>
+          <label><b>Email</b></label>
+          <div class="form-group col-md-6" [class.has-error]="email.invalid && email.touched" [class.has-success]="email.valid">
+              <input type="text" required [email]="user.email !== ''" [(ngModel)]="user.email" name="email" class="form-control"
+               placeholder="Email"  #email="ngModel">
+              <span class="help-block" *ngIf="email.errors?.required && email.touched" class="alert alert-danger">
+                !Email is required
+              </span>
+              <span class="help-block" *ngIf="email.errors?.email && email.touched">
+                !Email is invalid
+              </span>
+            </div>
+            <div>
+              <br>
+              <h5>Instructions for Quiz</h5>
+                  <ul>
+                  <li>Quiz time limit is 60 minutes.</li>
+                  <li>This mock test has  40 questions.</li>
+                  <li>Each Question is of 1 mark so total of 40 marks.</li>
+                  <li>Multiple choice questions with one valid answer.</li>
+                  <li>To start, click the "Start Quiz" button. When finished, click the "Submit Quiz" button.</li>
+                </ul>
+              
+            </div>
+                 <div>
+                  <button class="btn btn-success" (click)="newUser()">Add</button>
+                </div>
+           
+          </form>
+        
+              <button type="submit" class="btn btn-success">Submit</button>
+          
+  </mat-card>
+</div>
+<---------------------------------------------->
+ .center{
+    padding-top: 4%;
+    height: 100%;
+    width: 60%;
+    margin: 20px auto;
+  }
+  
+  .main-div{
+    height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .title{
+      text-align: center;
+  }
+  .for{
+      display: inline;
+  }
+  
+  .nav-right{
+      float: right;
+  }
+  .nav-item{
+      color: black;
+      background-color: beige;
+  }
+  <--------------------------------->
+  OnInit() {
+  }
+
+  newUser(): void {
+    this.submitted = false;
+    this.save();
+  }
+onSubmit() {
+ this.submitted = true;
+
+  //this.router.navigate(['./cigna/ssgqa/selquiz/register/ques']);
+}
+
+save() {
+  console.log(this.user);
+  this.sprser.createUser(this.user)
+    .subscribe(data => console.log(data), error => console.log(error));  
+}
+}
+
+
+export class User {
+  userName: string;
+  email: string;
+}
+<------------------------------------------------------->
+
+ <form (ngSubmit)="onSubmit()">
+    <nav class="nav-time col-md-4">
+      <label>Time left: &nbsp;</label>
+      <countdown [config]="{leftTime: 10*10}"  (event)="onEvent($event)" >$!m!:$!s!&nbsp;minutes </countdown>
+      </nav>
+      <button type="submit" class="btn btn-success">Submit</button>
+    </form>
+    -----------------------------------------------
+    
+     timeLeft: number;
+  constructor() { }
+
+  ngOnInit() {
+  }
+  onEvent($event): void {
+  this.timeLeft = $event.left;
+  console.log(this.timeLeft);
+  if (this.timeLeft === 0){
+      console.log("time finished");
+      }
+}
+onSubmit(){
+if (this.timeLeft === 0){
+console.log("time finished");
+}
+}
+------------------------------------------------
+questions: Quiz[];
+option: any[];
+i: number = 0;
+nextquestion: string;
+nxtchoice1: string;
+nxtchoice2: string;
+nxtchoice3: string;
+nxtchoice4: string;
+arr: string[];
+ public successClass = 'test-special';
+public id: number;
+ public myId = 'testId';
+array: string[];
+
+ email = '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$';
+constructor(private sprser: SpringService, private httpser: HttpClient) { }
+
+ngOnInit() {
+this.sprser.getAll().subscribe(data =>{
+  this.questions = data;
+  console.log(this.questions);
+});
+}
+check(event) {
+  if (event.target.checked) {
+    const selected = event.target.value;
+    console.log(selected);
+    //this.answerkey.push(new AnswerKey(str, answer));
+  } else{
+     // this.answerkey.slice(0, 1);
+  }
+ // console.log(this.answerkey);
+  
+  }
+next() {
+++this.i;
+this.nextquestion = this.questions[this.i].question;
+this.nxtchoice1 = this.questions[this.i].choice1;
+this.nxtchoice2 = this.questions[this.i].choice2;
+this.nxtchoice3 = this.questions[this.i].choice3;
+this.nxtchoice4 = this.questions[this.i].choice4;
+}
+
+previous() {
+this.i--;
+this.nextquestion = this.questions[this.i].question;
+this.nxtchoice1 = this.questions[this.i].choice1;
+this.nxtchoice2 = this.questions[this.i].choice2;
+this.nxtchoice3 = this.questions[this.i].choice3;
+this.nxtchoice4 = this.questions[this.i].choice4;
+}
+
+generateResult() {
+
+}
+
+export class Quiz {
+  question: string;
+  choice1: string;
+  choice2: string;
+  choice3: string;
+  choice4: string;
+  answer: string;
+}
+-----------------------------------------------------
+ .center{
+    padding-top: 4%;
+    height: 100%;
+    width: 60%;
+    margin: 20px auto;
+  }
+ .options{
+ padding-left: 60px;
+ }
+ .nav-right{
+    float: right;
+}
+.ques{
+    padding-left: 50px;
+    font-size: 18px;
+
+}
+.for{
+    font-style: italic;
+    color: chartreuse;
+}
+.nav-time{
+       float: right;
+        color: black;
+        background-color:blanchedalmond;
+    
+}
+.rad{
+    padding-left: 15px;
+}
+--------------------------------------
+      
+<form  #myForm="ngForm" (submit)="submitForm(myForm)" novalidate>
+        <mat-card class="z-depth center" flex="50">
+        <mat-card-title>Selenium Quiz - Online MCQ (Multiple Choice Question) Test</mat-card-title><hr> 
+          <nav class="nav-time col-md-4"><label>Time left: &nbsp;</label><countdown [config]="{leftTime: 60*60}">$!m!:$!s!&nbsp;minutes</countdown>
+          </nav><br> 
+         
+            
+          <div>
+           <label><b>Question {{i+1}}:</b></label> <br>
+               <p class="ques"> {{ questions[i].question}}</p>
+            </div>
+<br>
+            <div class="options">
+             <div class="col-md-6">
+            
+                <div>
+                    <input id={{questions[i].choice1}} type="radio" class="custom-input" value={{questions[i].choice1}} name="options" ngModel required
+                    (click)="check($event)"/>
+                    <label class="custom-label" for="choice1">{{questions[i].choice1}}</label> 
+                 </div><br>
+                 <div>
+                    <input id="choice2" type="radio" class="custom-input" value={{questions[i].choice2}} name="options" ngModel required
+                    (click)="check($event)">
+                    <label class="custom-label" for="choice2">{{questions[i].choice2}}</label>
+                 </div><br>
+                 <div>
+                    <input id="choice3" type="radio" class="custom-input" value="choice3" name="options" ngModel required
+                    (click)="check($event)">
+                    <label class="custom-label" for="choice3">{{questions[i].choice3}}</label>
+                 </div><br>
+                 <div>
+                    <input id="choice4" type="radio" class="custom-input" value="choice4" name="options" ngModel required
+                    (click)="check($event)">
+                    <label class="custom-label" for="choice4">{{questions[i].choice4}}</label>
+                 </div>
+                  </div>
+       </div>
+           <br>
+            <div>
+                <nav class="nav-item">
+                    <button class="btn btn-primary for " (click)="previous()">Previous Question</button>
+             
+                    <button class="btn btn-primary nav-right for" (click)="next()">Next Question</button>
+                 </nav>
+                 </div> 
+          </mat-card>
+        </form>   
+        -----------------------------------------------------------
+        
