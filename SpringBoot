@@ -1,0 +1,186 @@
+Controller
+package com.javainuse.SpringBootApp.controller;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.javainuse.SpringBootApp.model.Quiz;
+import com.javainuse.SpringBootApp.model.User;
+import com.javainuse.SpringBootApp.repo.QuizRepository;
+
+
+ 
+@CrossOrigin(origins = "http://localhost:4200")
+@RestController
+@RequestMapping("/api")
+
+public class QuizController {
+
+	@Autowired
+	QuizRepository repository;
+
+	@GetMapping("/questions")
+	public List<Quiz> getAll() {
+		System.out.println("Get all...");
+
+		List<Quiz> fromdb = new ArrayList<>();
+		repository.findAll().forEach(fromdb::add);
+
+		return fromdb;
+	}
+	 @PostMapping(value = "/userdetails")
+	  public User postRegestration(@RequestBody User reges) {
+	   System.out.println("here it is-----"+ reges);
+		 User _reges = repository.save(new User(reges.getUsername(),reges.getEmail()));
+		 System.out.println(_reges);
+	    return _reges;
+	   
+	  }
+	 
+}
+
+----------------------------------------------
+Repository
+
+package com.javainuse.SpringBootApp.repo;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
+
+import com.javainuse.SpringBootApp.model.Quiz;
+import com.javainuse.SpringBootApp.model.User;
+public interface QuizRepository extends JpaRepository<Quiz, Long>{
+
+	User save(User user);
+	
+}
+----------------------------------
+application.properties
+
+server.port:8085
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2_console
+spring.datasource.url=jdbc:h2:tcp://localhost/~/test
+spring.datasource.username=SA
+spring.datasource.password=
+spring.datasource.driverClassName=org.h2.Driver
+spring.jpa.hibernate.ddl-auto = update
+spring.jpa.show-sql=true
+------------------------------------------
+User.java
+package com.javainuse.SpringBootApp.model;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+@Entity
+@Table(name="User")
+
+public class User {
+
+		@Id
+		 @GeneratedValue(strategy = GenerationType.AUTO)
+		@Column(name="UserName")
+		private String UserName;
+		
+		@Column(name="Email")
+		private String Email;
+		
+		public User(){
+			
+		}
+		public User(String UserName, String email){
+			this.UserName = UserName;
+			this.Email = email;
+		}
+		public String getUsername(){
+			return UserName;
+		}
+		public void setUsername(String Username){
+			this.UserName = Username;
+		}
+		public String getEmail(){
+			return Email;
+		}
+		public void setEmail(String Email) {
+			this.Email = Email;
+		}
+	}
+
+
+------------------------------
+pom.xml
+
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.grokonez.springrest.h2</groupId>
+	<artifactId>SpringBootRestAPIsH2</artifactId>
+	<version>0.0.1</version>
+	<packaging>jar</packaging>
+
+	<name>SpringBootRestAPIsH2</name>
+	<description>SpringBootRestAPIsH2</description>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.0.4.RELEASE</version>
+		<relativePath/> <!-- lookup parent from repository -->
+	</parent>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>1.8</java.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>com.h2database</groupId>
+		    <artifactId>h2</artifactId>
+		</dependency>				
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+
+</project>
+-------------------------------------
