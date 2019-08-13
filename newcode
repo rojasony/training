@@ -1,0 +1,170 @@
+<form  #myForm="ngForm" (ngSubmit)="onSubmit(myForm.value)" novalidate>
+        <mat-card class="z-depth center" flex="50">
+        <mat-card-title>Selenium Quiz - Online MCQ (Multiple Choice Question) Test</mat-card-title><hr> 
+          <nav class="nav-time col-md-4"><label>Time left: &nbsp;</label>
+          <countdown [config]="{leftTime: 60*60}">$!m!:$!s!&nbsp;minutes</countdown>
+          </nav><br> 
+        
+             <div>
+           <br><label>Question {{i}}</label>
+               <p class="ques"> {{ nextquestion }}</p>
+            </div>
+<br>
+            <div class="options">
+           
+            <div class="col-md-8">
+            
+                <div>
+                    <input  type="radio" class="custom-input" value={{nxtchoice1}} name="options" 
+                    (click)="check($event)"/>
+                    <label class="custom-label" for="choice1">{{nxtchoice1}}</label> 
+                 </div><br>
+                 <div>
+                    <input  type="radio" class="custom-input" value={{nxtchoice2}} name="options" 
+                    (click)="check($event)"/>
+                    <label class="custom-label" for="choice2">{{nxtchoice2}}</label>
+                 </div><br>
+                 <div>
+                    <input  type="radio" class="custom-input" value={{nxtchoice3}} name="options"  
+                    (click)="check($event)"/>
+                    <label class="custom-label" for="choice3">{{nxtchoice3}}</label>
+                 </div><br>
+                 <div>
+                    <input  type="radio" class="custom-input" value={{nxtchoice4}} name="options" 
+                    (click)="check($event)"/>
+                    <label class="custom-label" for="choice4">{{nxtchoice4}}</label>
+                 </div>  
+          </div>
+        </div>
+       
+           <br>
+            <div>
+                <nav class="nav-item">
+                    <button class="btn btn-primary for " (click)="previous()" *ngIf="i>0">Previous Question</button>
+             
+                    <button class="btn btn-primary nav-right for" type="submit">Next Question</button>
+                 </nav>
+                 </div> <br>
+                ----------------------------------------------
+                export class EmployeComponent implements OnInit {
+myForm: any;
+questions: Quiz[];
+option: any[];
+i = 0;
+marks = 0;
+quizlength: number;
+selected: string;
+ //answerkey: AnswerKey[] = [];
+
+nextquestion: string;
+nxtchoice1: string;
+nxtchoice2: string;
+nxtchoice3: string;
+nxtchoice4: string;
+
+email = '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$';
+constructor(private sprser: SpringService, private httpser: HttpClient) { }
+
+ngOnInit() {
+this.sprser.getAll().subscribe(data => {
+  this.questions = data;
+  console.log(this.questions);
+  this.quizlength = this.questions.length;
+  console.log(this.quizlength);
+
+  this.nextquestion = this.questions[this.i].question;
+  console.log(this.nextquestion);
+  this.nxtchoice1 = this.questions[this.i].choice1;
+  this.nxtchoice2 = this.questions[this.i].choice2;
+  this.nxtchoice3 = this.questions[this.i].choice3;
+  this.nxtchoice4 = this.questions[this.i].choice4;
+});
+
+}
+
+next() {
+this.myForm.reset();
+++this.i;
+console.log(this.i);
+console.log(this.questions[this.i].choice1);
+
+this.nextquestion = this.questions[this.i].question;
+console.log(this.nextquestion);
+this.nxtchoice1 = this.questions[this.i].choice1;
+this.nxtchoice2 = this.questions[this.i].choice2;
+this.nxtchoice3 = this.questions[this.i].choice3;
+this.nxtchoice4 = this.questions[this.i].choice4;
+}
+
+
+previous() {
+this.i--;
+this.nextquestion = this.questions[this.i].question;
+this.nxtchoice1 = this.questions[this.i].choice1;
+this.nxtchoice2 = this.questions[this.i].choice2;
+this.nxtchoice3 = this.questions[this.i].choice3;
+this.nxtchoice4 = this.questions[this.i].choice4;
+}
+check(event) {
+  if (event.target.checked) {
+     this.selected = event.target.value;
+     console.log(this.selected);
+    // this.generatemark();
+
+  }
+}
+onSubmit() {
+     for (let i = 0; i < this.quizlength; i++) {
+       if (this.selected === this.questions[this.i].answer ) {
+         this.marks++;
+         console.log(this.marks);
+       }
+      }
+}
+
+}
+
+export class Quiz {
+  question: string;
+  choice1: string;
+  choice2: string;
+  choice3: string;
+  choice4: string;
+  answer: string;
+}
+
+-----------------------------
+
+  .center{
+    padding-top: 4%;
+    height: 70vh;
+    width: 60%;
+    margin: 20px auto;
+  }
+ .options{
+ padding-left: 60px;
+ }
+ .nav-right{
+    float: right;
+}
+.ques{
+    padding-left: 50px;
+    font-size: 18px;
+
+}
+.for{
+    font-style: italic;
+  
+}
+.nav-time{
+       float: right;
+        color: black;
+        background-color:blanchedalmond;
+    
+}
+.rad{
+    padding-left: 15px;
+}
+.final{
+text-align: center;
+}
