@@ -1,0 +1,197 @@
+package Fineos.fineos;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Properties;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.Test;
+
+import com.functionalities.Caseperson;
+
+
+public class DriverScript {
+
+	public static Properties prop;
+	@Test
+	public  void browser() throws FileNotFoundException, IOException, InterruptedException
+    {
+		prop=new Properties();
+		prop.load(new FileInputStream("C:\\Users\\N97619\\workspace\\fineos\\src\\test\\java\\Fineos\\fineos\\object.properties"));
+        System.out.println( "Hello World!" );
+        System.setProperty("webdriver.chrome.driver","C:\\chrome\\chromedriver.exe");
+  	  WebDriver driver = new ChromeDriver();
+  	 driver.manage().window().maximize();
+  	 
+  	  String url_fineos= "https://" + "Fineos_qa14" + ":" + "Password1" + "@" + "d-sso.group.cigna.com/cigna_sysc/";
+  	  driver.get( url_fineos);
+  	  // System.out.println( "After Base!" );
+  	
+  	  
+  	Caseperson obj1=new Caseperson();
+	  obj1.Case(driver);
+
+	}
+
+}
+============================
+##for template 
+case_search=a[id$='SearchCaseslink']
+#case_opt=//table[@class="TabStrip"]/tbody/tr/td[2]
+case_opt=td[id$='Payments_searchByCase_cell']
+case_num=input[id$="_caseNumber"]
+search_btn=input[id$="_searchButton"]
+correspon=//div[@title='Correspondence']
+add_doc=//a[@title="Add Document"]
+search1=//table[@class="TabStrip"]/tbody/tr/td[2]
+letter=input[id$="_businesstype"]
+search_letter=input[id$="Search"]
+Ok_letter=input[id$="_searchPageOk"]
+to_btn=input[id$="_To_Button"]
+uncheck_postal=input[title="Postal"]
+email_clk=select[id*="_Email_"]
+next_dde=input[id$="_next"]
+
+========================================
+////////////////for template////////////////////////////
+	public static String casesearch=DriverScript.prop.getProperty("case_search");
+	public static String caseopt=DriverScript.prop.getProperty("case_opt");
+	public static String casenum=DriverScript.prop.getProperty("case_num");
+	public static String searchbtn=DriverScript.prop.getProperty("search_btn");
+	public static String correspon=DriverScript.prop.getProperty("correspon");
+	public static String add_doc=DriverScript.prop.getProperty("add_doc");
+	public static String search1=DriverScript.prop.getProperty("search1");
+	public static String letter= DriverScript.prop.getProperty("letter");
+	public static String search_lett= DriverScript.prop.getProperty("search_letter");
+	public static String Ok_letter= DriverScript.prop.getProperty("Ok_letter");
+	public static String To_btn= DriverScript.prop.getProperty("to_btn");
+	public static String uncheck_postal= DriverScript.prop.getProperty("uncheck_postal");
+	public static String email_clk= DriverScript.prop.getProperty("email_clk");
+	public static String next= DriverScript.prop.getProperty("next_dde");
+}
+=================================================
+public class Caseperson {
+public void Case(WebDriver driver) throws InterruptedException {
+		try{
+			driver.findElement(By.cssSelector(CasepersonObj.casesearch)).click();
+			Thread.sleep(1000);
+			driver.findElement(By.cssSelector(CasepersonObj.caseopt)).click();
+			Thread.sleep(1000);
+			driver.findElement(By.cssSelector(CasepersonObj.casenum)).sendKeys("11016265-01");
+			Thread.sleep(1000);
+			driver.findElement(By.cssSelector(CasepersonObj.searchbtn)).click();
+			Thread.sleep(1000);
+			driver.findElement(By.xpath(CasepersonObj.correspon)).click();
+			Thread.sleep(1000);
+			driver.findElement(By.xpath(CasepersonObj.add_doc)).click();
+			Thread.sleep(1000);
+			driver.findElement(By.xpath(CasepersonObj.search1)).click();
+			Thread.sleep(1000);
+			driver.findElement(By.cssSelector(CasepersonObj.letter)).sendKeys("BAE Anyocc Review Pending");
+			Thread.sleep(1000);
+			driver.findElement(By.cssSelector(CasepersonObj.search_lett)).click();
+			Thread.sleep(1000);
+			driver.findElement(By.cssSelector(CasepersonObj.Ok_letter)).click();
+			Thread.sleep(1000);
+			driver.findElement(By.cssSelector(CasepersonObj.To_btn)).click();
+			Thread.sleep(1000);
+			driver.findElement(By.cssSelector(CasepersonObj.uncheck_postal)).click();
+			Thread.sleep(1000);
+			//driver.findElement(By.cssSelector(CasepersonObj.email_clk)).click();
+			//Thread.sleep(1000);
+			
+			Select email = new Select(driver.findElement(By.cssSelector(CasepersonObj.email_clk)));
+			email.selectByVisibleText("Email: roja.pilli@cigna.com");
+			driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+			Thread.sleep(1000);
+			
+			driver.findElement(By.cssSelector(CasepersonObj.next)).click();
+			Thread.sleep(1000);
+			
+			  driver.findElement(By.cssSelector("body")).sendKeys(Keys.CONTROL +"t");
+	}
+		catch(Exception e){
+			e.printStackTrace();
+		}
+}
+}
+==================================
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>Fineos</groupId>
+  <artifactId>fineos</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <name>fineos</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+  <dependency>
+   <groupId>org.seleniumhq.selenium</groupId>
+   <artifactId>selenium-java</artifactId>
+   <version>2.53.1</version>
+ </dependency>
+ 
+ <!-- TestNG -->
+ <dependency>
+   <groupId>org.testng</groupId>
+   <artifactId>testng</artifactId>
+   <version>6.8</version>
+   <scope>test</scope>
+ </dependency> 
+ 
+  </dependencies>
+  
+  <build>
+   <plugins>
+   <plugin>
+   <groupId>org.apache.maven.plugins</groupId>
+           <artifactId>maven-compiler-plugin</artifactId>
+           <version>3.6.1</version>
+           <configuration>
+           <source>1.8</source>
+           <target>1.8</target>
+           </configuration>
+   </plugin>
+   
+   <plugin>
+   <groupId>org.apache.maven.plugins</groupId>
+           <artifactId>maven-surefire-plugin</artifactId>
+           <version>2.20</version>
+           <configuration>
+           <suiteXmlFiles>
+           <suiteXmlFile>testng.xml</suiteXmlFile>
+           <!-- <suiteXmlFile>src/main/resources/testng.xml</suiteXmlFile> -->
+           </suiteXmlFiles>
+           </configuration>
+   </plugin>
+   </plugins>  
+  </build>
+ 
+</project>
+=========================
+<?xml version="1.0" encoding="UTF-8"?>
+<suite name="Suite" parallel="false">
+  <test name="Test">
+    <classes>
+      <class name="Fineos.fineos.DriverScript"/>
+    </classes>
+  </test> <!-- Test -->
+</suite> <!-- Suite -->
