@@ -1,0 +1,44 @@
+ ChildComp: FormGroup;
+  @Input() pageName: string;
+  @Input() Question: string;
+  @Input() Choice1: string;
+  @Input() Choice2: string;
+  @Input() Choice3: string;
+  @Input() Choice4: string;
+ 
+  @Output() reflect: EventEmitter<string> = new EventEmitter();
+  constructor(private fb: FormBuilder) { }
+
+  ngOnInit() {
+    this.ChildComp = this.fb.group({
+      [this.pageName]: this.fb.group({
+    })
+    });
+  }
+  =====================
+  
+  <form [formGroup]="ChildComp">
+  <div formGroupName="{{pageName}}">
+      <div class="col-md-8 vvl"  >
+          <label> {{Question}}</label>  
+          <label>{{Choice1}}</label><br>
+          <label>{{Choice2}}</label><br>
+          <label>{{Choice3}}</label><br>
+          <label>{{Choice4}}</label><br>
+        </div>
+   
+    
+</div>
+
+</form>
+=======================
+<div>
+<app-child
+[Question]="nextquestion"
+[Choice1]="nxtchoice1"
+[Choice2]="nxtchoice2"
+[Choice3]="nxtchoice3"
+[Choice4]="nxtchoice4"></app-child>
+
+</div>
+==============================
