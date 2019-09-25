@@ -1,0 +1,87 @@
+testcomponent.html
+
+<input type="radio" formControlName="options" [value]="questions[quesNum].choice1"
+ >{{questions[quesNum].choice1}} <br>
+ <input type="radio" formControlName="options" [value]="questions[quesNum].choice2"
+ >{{questions[quesNum].choice2}} <br>
+ <input type="radio" formControlName="options" [value]="questions[quesNum].choice3"
+ >{{questions[quesNum].choice3}} <br>
+ <input type="radio" formControlName="options" [value]="questions[quesNum].choice4"
+ >{{questions[quesNum].choice4}} <br>
+
+</div>
+<input type="button" (click)="navigate()">next
+
+<input type="button" (click)="finalpage()">final 
+<app-results
+(finalpage)="final()"></app-results>
+</form>
+==================================
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { SpringService } from '../spring.service';
+import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
+
+@Component({
+  selector: 'app-test',
+  templateUrl: './test.component.html',
+  styleUrls: ['./test.component.scss']
+})
+export class TestComponent {
+ quesNum = 0;
+ questions: Quiz[];
+option: any[];
+i = 0;
+marks = 0;
+quizlength: number;
+selectedans: any[];
+form : FormGroup;
+selected: string;
+
+  constructor(private route: ActivatedRoute, private sprser: SpringService, private router: Router, private formBuilder : FormBuilder) {
+
+    this.route.paramMap.subscribe(params => {
+      this.quesNum = +params.get('questionId');
+    });
+
+    this.sprser.getAll().subscribe(data => {
+      this.questions = data;
+      console.log(this.questions);
+      this.quizlength = this.questions.length;
+      console.log(this.quizlength);
+    });
+    this.form = this.formBuilder.group({
+    options: ['', Validators.required],
+    });
+}
+
+  navigate() {
+  this.selected = this.form.controls['options'].value;
+  console.log(this.selected );
+  console.log(this.questions[this.quesNum].answer);
+  if (this.selected === this.questions[this.quesNum].answer) {
+    this.marks = this.marks + 1;
+    }
+  console.log(this.marks);
+  this.form.controls['options'].reset();
+  this.router.navigate(['/question', this.quesNum + 1]);
+
+  }
+final(){
+  // this.router.navigate(['/results']);
+   console.log(this.marks);
+}
+
+}
+export class Quiz {
+  question: string;
+  choice1: string;
+  choice2: string;
+  choice3: string;
+  choice4: string;
+  answer: string;
+}
+
+/*export class Selectedans {
+  selected: string;
+}*/
