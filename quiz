@@ -1,0 +1,626 @@
+register.ts
+-------------------------
+import { Component, OnInit } from '@angular/core';
+import {Router} from '@angular/router';
+import * as XLSX from 'xlsx';
+import { SpringService } from '../spring.service';
+
+
+@Component({
+  selector: 'app-register',
+  templateUrl: './register.component.html',
+  styleUrls: ['./register.component.scss']
+})
+export class RegisterComponent implements OnInit {
+user = new User();
+submitted: boolean;
+  constructor(private router: Router, private sprser: SpringService) { }
+email = '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$';
+  ngOnInit() {
+  }
+
+  newUser(): void {
+    this.submitted = false;
+    this.save();
+  }
+onSubmit() {
+ this.submitted = true;
+ //this.router.navigate(['./cigna/ssgqa/selquiz/register/ques']);
+ this.router.navigate(['/question', 0]);
+}
+
+save() {
+  console.log(this.user);
+  this.sprser.createUser(this.user)
+    .subscribe(data => console.log(data), error => console.log(error));
+}
+}
+---------------------
+register.html
+
+<div class="main-div bg-light mb-3">
+  <mat-card class="z-depth center" flex="50">
+      <mat-card-title class="title">Quiz Registration</mat-card-title><hr><br>
+     <div>
+      
+      <nav class="nav-item">
+          <ul>
+            <li class="for">Total questions: 40 </li>
+           <li class="nav-right for">Time Limit: 60minutes</li></ul>
+       </nav>
+      
+      </div>
+      <form (ngSubmit)="onSubmit()">
+          <div>
+              <label><b>Id</b></label>
+             <div class="form-group col-md-6" [class.has-error]="Id.invalid && Id.touched" [class.has-success]="Id.valid">
+                 <input type="text" [(ngModel)]="user.Id" #Id="ngModel" required name="Id" class="form-control" 
+                 placeholder="Id">
+                 <span class="help-block" *ngIf="Id.errors?.required && Id.touched" class="alert alert-danger">
+                   !Id is required
+                 </span>
+               </div>
+             </div>
+         <div>
+           <label><b>UserName</b></label>
+          <div class="form-group col-md-6" [class.has-error]="userName.invalid && userName.touched" [class.has-success]="userName.valid">
+              <input type="text" [(ngModel)]="user.userName" #userName="ngModel" required name="userName" class="form-control" 
+              placeholder="User Name">
+              <span class="help-block" *ngIf="userName.errors?.required && userName.touched" class="alert alert-danger">
+                !User Name is required
+              </span>
+            </div>
+          </div>
+          <label><b>Email</b></label>
+          <div class="form-group col-md-6" [class.has-error]="email.invalid && email.touched" [class.has-success]="email.valid">
+              <input type="text" required [email]="user.email !== ''" [(ngModel)]="user.email" name="email" class="form-control"
+               placeholder="Email"  #email="ngModel">
+              <span class="help-block" *ngIf="email.errors?.required && email.touched" class="alert alert-danger">
+                !Email is required
+              </span>
+              <span class="help-block" *ngIf="email.errors?.email && email.touched">
+                !Email is invalid
+              </span>
+            </div>
+            <div>
+              <br>
+              <h5>Instructions for Quiz</h5>
+                  <ul>
+                  <li>Quiz time limit is 60 minutes.</li>
+                  <li>This mock test has  40 questions.</li>
+                  <li>Each Question is of 1 mark so total of 40 marks.</li>
+                  <li>Multiple choice questions with one valid answer.</li>
+                  <li>To start, click the "Start Quiz" button. When finished, click the "Submit Quiz" button.</li>
+                </ul>
+              
+            </div>
+                 <div>
+                  <button class="btn btn-success" (click)="newUser()">Add</button>
+                </div>
+           
+          </form>
+        
+              <button type="submit" class="btn btn-success">Start Quiz</button>
+          
+  </mat-card>
+</div>
+-------------------
+quiz.ts
+
+import {Component, OnInit, ChangeDetectionStrategy, Input } from '@angular/core';
+import { SpringService } from '../spring.service';
+
+import { DataSource } from '@angular/cdk/collections';
+import { HttpClient } from '@angular/common/http';
+import { NgForm, Form, FormBuilder, Validators, FormGroup } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+
+
+
+@Component({
+  selector: 'app-employe',
+  templateUrl: './employe.component.html',
+  styleUrls: ['./employe.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class EmployeComponent implements OnInit {
+
+questions: Quiz[];
+option: any[];
+i = 0;
+marks = 0;
+quizlength: number;
+selected: string;
+ //answerkey: AnswerKey[] = [];
+quesNum = 0;
+form : FormGroup;
+nextquestion: string;
+nxtchoice1: string;
+nxtchoice2: string;
+nxtchoice3: string;
+nxtchoice4: string;
+
+email = '[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$';
+//constructor(private sprser: SpringService, private httpser: HttpClient) { }
+constructor(private route: ActivatedRoute, private sprser: SpringService, private router: Router, private formBuilder: FormBuilder) {
+
+  this.route.paramMap.subscribe(params => {
+    this.quesNum = +params.get('questionId');
+  });
+
+  this.sprser.getAll().subscribe(data => {
+    this.questions = data;
+    console.log(this.questions);
+    this.quizlength = this.questions.length;
+    console.log(this.quizlength);
+  });
+  this.form = this.formBuilder.group({
+  options: ['', Validators.required],
+  });
+}
+
+navigate() {
+this.selected = this.form.controls['options'].value;
+console.log(this.selected );
+console.log(this.questions[this.quesNum].answer);
+if (this.selected === this.questions[this.quesNum].answer) {
+  this.marks = this.marks + 1;
+  }
+console.log(this.marks);
+this.form.controls['options'].reset();
+this.router.navigate(['/cigna/ssgqa/selquiz/register/ques', this.quesNum + 1]);
+
+}
+previous() {
+
+  this.router.navigate(['cigna/ssgqa/selquiz/register/ques', this.quesNum - 1]);
+}
+final() {
+// this.router.navigate(['/results']);
+ console.log(this.marks);
+}
+ngOnInit() {
+
+}
+
+/*ngOnInit() {
+this.sprser.getAll().subscribe(data => {
+  this.questions = data;
+  console.log(this.questions);
+  this.quizlength = this.questions.length;
+  console.log(this.quizlength);
+
+  this.nextquestion = this.questions[this.i].question;
+  console.log(this.nextquestion);
+  this.nxtchoice1 = this.questions[this.i].choice1;
+  this.nxtchoice2 = this.questions[this.i].choice2;
+  this.nxtchoice3 = this.questions[this.i].choice3;
+  this.nxtchoice4 = this.questions[this.i].choice4;
+});
+
+}
+
+next() {
+//myForm.reset(this.nxtchoice1);
+
+++this.i;
+this.nextquestion = this.questions[this.i].question;
+this.nxtchoice1 = this.questions[this.i].choice1;
+this.nxtchoice2 = this.questions[this.i].choice2;
+this.nxtchoice3 = this.questions[this.i].choice3;
+this.nxtchoice4 = this.questions[this.i].choice4;
+}
+
+
+previous() {
+this.i--;
+this.nextquestion = this.questions[this.i].question;
+this.nxtchoice1 = this.questions[this.i].choice1;
+this.nxtchoice2 = this.questions[this.i].choice2;
+this.nxtchoice3 = this.questions[this.i].choice3;
+this.nxtchoice4 = this.questions[this.i].choice4;
+}
+check(event) {
+  if (event.target.checked) {
+     this.selected = event.target.value;
+     console.log(this.selected);
+    // this.generatemark();
+
+  }
+}
+onSubmit() {
+
+     for (let i = 0; i < this.quizlength; i++) {
+       if (this.selected === this.questions[this.i].answer ) {
+         this.marks++;
+         console.log(this.marks);
+       }
+      }
+}*/
+
+}
+
+export class Quiz {
+  question: string;
+  choice1: string;
+  choice2: string;
+  choice3: string;
+  choice4: string;
+  answer: string;
+}
+
+
+
+//answerkey: AnswerKey[] = [];
+
+ //employees: Employe[];
+ /*dataSource = new EmployeDataSource(this.sprser);
+ displayedColumns = ['name', 'id'];*/
+/* 
+ next() {
+    ++this.i;
+    this.question = this.selectedlangques[this.i].question;
+    this.option = this.selectedlangques[this.i].anslistobj;
+
+  }
+    previous() {
+    this.i--;
+    this.question = this.selectedlangques[this.i].question;
+    this.option = this.selectedlangques[this.i].anslistobj;
+  }
+ngOnInit() {
+//this.sprser.getdetails().subscribe(data =>{
+  //this.employees = data;
+this.httpser.get('./assets/questions/questions.json').subscribe(data =>
+  {
+   this.arr = data as string[];
+   console.log(this.arr[1]);
+  });
+
+
+}
+register(user: User): void{
+  console.log(user);
+}
+}*/
+/*export class EmployeDataSource extends DataSource<any> {
+  constructor(private sprser: SpringService) {
+    super();
+  }
+  connect() {
+    return this.sprser.getdetails();
+  }
+  disconnect() {}
+
+
+}
+export class User {
+
+ 
+  email: string;
+}*/
+/*export interface Employe {
+  name: string;
+  id: number;
+}*/
+-------------------------------------
+quiz.ts
+
+<form novalidate [formGroup]="form">
+          <option [ngValue]="level" *ngFor="let level of levels">
+            {{level.lev}}
+          </option>
+          <mat-card class="z-depth center" flex="50">
+            <mat-card-title>Selenium Quiz - Online MCQ (Multiple Choice Question) Test</mat-card-title><hr> 
+              <nav class="nav-time col-md-4"><label>Time left: &nbsp;</label>
+              <countdown [config]="{leftTime: 60*60}">$!m!:$!s!&nbsp;minutes</countdown>
+              </nav><br> 
+              <br>
+            
+          <h6> {{quesNum}} :{{ questions[quesNum].question }} </h6>
+          <br>
+          <div class="options">
+                 
+            <!--<div class="col-md-8"> 
+          <ng-container *ngFor="let answer of sampleArray">
+                <input type="radio" formControlName="answer" name="answer" [value]="questions[quesNum].choice1" >
+                {{ questions[quesNum].choice1 }}</ng-container>
+          </div>-->
+           <input type="radio" formControlName="options" [value]="questions[quesNum].choice1"
+           >{{questions[quesNum].choice1}} <br>
+           <br>
+           <input type="radio" formControlName="options" [value]="questions[quesNum].choice2"
+           >{{questions[quesNum].choice2}} <br>
+          <br>
+           <input type="radio" formControlName="options" [value]="questions[quesNum].choice3"
+           >{{questions[quesNum].choice3}} <br>
+           <br>
+           <input type="radio" formControlName="options" [value]="questions[quesNum].choice4"
+           >{{questions[quesNum].choice4}} <br>
+          <br>
+          </div>
+          <div>
+            <nav class="nav-item">
+          <button class="btn btn-primary for" (click)="navigate()">Next</button>
+          <br>
+          <button class="btn btn-primary nav-right for" (click)="previous()">Previous</button><br>
+        </nav>
+        </div>
+          <button (click)="final()">Final</button><br>
+          
+          </mat-card>
+        </form>
+        --------------------------------------------------
+     test   
+   <form form (ngsubmit)="submitForm()" novalidate>
+     <div>
+      
+     <label>Level: </label> 
+    <select [(ngModel)]="selectedValue" name="level" class="col-md-2">
+      <option *ngFor="let typ of types" >{{typ.level}}</option>
+    </select>
+  
+
+  <div *ngIf = "selectedValue == 'type'">
+
+      <p> {{i}} :{{nextques}} </p>
+      <div class="options">
+             
+       <input type="radio" name="options" value="{{nxtchoice1}}">{{nxtchoice1}} <br>
+       <input type="radio" name="options"  value="{{nxtchoice2}}">{{nxtchoice2}} <br>
+      </div>
+  </div>
+  </div>
+      
+      
+      <button (click)="navigate()">Next</button>
+      
+      <button (click)="previous()">Previous </button>  
+      <p>Selected option: {{ selectedValue }}</p>    
+      </form>
+-----------------------------------------------------------
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { SpringService } from '../spring.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+
+@Component({
+  selector: 'app-results',
+  templateUrl: './results.component.html',
+  styleUrls: ['./results.component.scss']
+})
+export class ResultsComponent implements OnInit {
+  timeLeft: number;
+  //form: FormGroup;
+  selectedValue: string;
+  selected: string;
+  sample: Sample[];
+  quesNum: number;
+  nextques: string;
+  nxtchoice1: string;
+  nxtchoice2: string;
+  i: number = 0;
+  type: string;
+  @Output() finalpage: EventEmitter<any> = new EventEmitter();
+
+  types = [
+  { level: ''},
+  { level: 'easy'},
+  { level: 'medium'},
+  { level: 'advanced'}
+  ]
+  constructor(private route: ActivatedRoute, private router: Router, private sprser: SpringService, private fb: FormBuilder)  {
+   /* this.route.paramMap.subscribe(params => {
+      this.quesNum = +params.get('questionId');
+    });
+    this.form = this.fb.group({
+      options: ['', Validators.required],
+      });*/
+  }
+
+  ngOnInit() {
+  this.sprser.getdetails().subscribe(data =>
+    {
+      this.sample = data;
+      console.log(this.sample);
+      this.nextques = this.sample[this.i].ques;
+      console.log(this.nextques);
+      this.nxtchoice1 = this.sample[this.i].choice1;
+      console.log(this.nxtchoice1);
+    
+      this.nxtchoice2 = this.sample[this.i].choice2;
+      console.log(this.nxtchoice2);
+      this.type = this.sample[this.i].type;
+      console.log(this.type);
+      
+      
+    });
+  }
+  navigate() {
+   // this.form.controls['options'].reset();
+    ++this.i;
+    this.nextques = this.sample[this.i].ques;
+    this.nxtchoice1 = this.sample[this.i].choice1;
+    this.nxtchoice2 = this.sample[this.i].choice2;
+   // this.router.navigate(['/question', this.quesNum + 1]);
+
+    }
+      previous() {
+        this.i--;
+        this.nextques = this.sample[this.i].ques;
+        this.nxtchoice1 = this.sample[this.i].choice1;
+        this.nxtchoice2 = this.sample[this.i].choice2;
+        }
+
+
+
+    /*onEvent($event): void {
+  this.timeLeft = $event.left;
+  console.log(this.timeLeft);
+  if (this.timeLeft === 0){
+      console.log("time finished");
+      this.onSubmit();
+      }
+}
+onSubmit(){
+// this.router.navigate(['./navbar']);
+}
+marks(){
+  this.finalpage.emit();
+}*/
+
+}
+
+export class Sample{
+  type: string;
+  ques: string;
+  choice1: string;
+  choice2: string;
+}
+--------------------------------------------------
+with quesid
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { SpringService } from '../spring.service';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+
+@Component({
+  selector: 'app-results',
+  templateUrl: './results.component.html',
+  styleUrls: ['./results.component.scss']
+})
+export class ResultsComponent implements OnInit {
+  timeLeft: number;
+  //form: FormGroup;
+  selectedValue: string;
+  selected: string;
+  sample: Sample[];
+  quesNum: number;
+  nextques: string;
+  nxtchoice1: string;
+  nxtchoice2: string;
+  i: number = 0;
+  type: string;
+  @Output() finalpage: EventEmitter<any> = new EventEmitter();
+
+  types = [
+  { level: ''},
+  { level: 'easy'},
+  { level: 'medium'},
+  { level: 'advanced'}
+  ]
+  constructor(private route: ActivatedRoute, private router: Router, private sprser: SpringService, private fb: FormBuilder)  {
+   /* this.route.paramMap.subscribe(params => {
+      this.quesNum = +params.get('questionId');
+    });
+    this.form = this.fb.group({
+      options: ['', Validators.required],
+      });*/
+  }
+
+  ngOnInit() {
+  this.sprser.getdetails().subscribe(data =>
+    {
+      this.sample = data;
+      console.log(this.sample);
+      this.nextques = this.sample[this.i].ques;
+      console.log(this.nextques);
+      this.nxtchoice1 = this.sample[this.i].choice1;
+      console.log(this.nxtchoice1);
+    
+      this.nxtchoice2 = this.sample[this.i].choice2;
+      console.log(this.nxtchoice2);
+      this.type = this.sample[this.i].type;
+      console.log(this.type);
+      
+      
+    });
+  }
+  navigate() {
+   // this.form.controls['options'].reset();
+    ++this.i;
+    this.nextques = this.sample[this.i].ques;
+    this.nxtchoice1 = this.sample[this.i].choice1;
+    this.nxtchoice2 = this.sample[this.i].choice2;
+   // this.router.navigate(['/question', this.quesNum + 1]);
+
+    }
+      previous() {
+        this.i--;
+        this.nextques = this.sample[this.i].ques;
+        this.nxtchoice1 = this.sample[this.i].choice1;
+        this.nxtchoice2 = this.sample[this.i].choice2;
+        }
+
+
+
+    /*onEvent($event): void {
+  this.timeLeft = $event.left;
+  console.log(this.timeLeft);
+  if (this.timeLeft === 0){
+      console.log("time finished");
+      this.onSubmit();
+      }
+}
+onSubmit(){
+// this.router.navigate(['./navbar']);
+}
+marks(){
+  this.finalpage.emit();
+}*/
+
+}
+
+export class Sample{
+  type: string;
+  ques: string;
+  choice1: string;
+  choice2: string;
+}---------------------------------------
+
+its html
+<form novalidate [formGroup]="form">
+
+  <label>Choose Type:</label>
+  <select class="form-control col-md-4" id="type" [(ngModel)]="selectedValue" name="type" >
+<option value="easy">Easy</option>
+<option value="medium">Medium</option>
+
+</select>
+<div *ngIf = "selectedValue == 'easy'">
+<h6> {{quesNum}} :{{ questions[quesNum].question }} </h6>
+<div class="options">
+       
+  <!--<div class="col-md-8"> 
+<ng-container *ngFor="let answer of sampleArray">
+      <input type="radio" formControlName="answer" name="answer" [value]="questions[quesNum].choice1" >
+      {{ questions[quesNum].choice1 }}</ng-container>
+</div>-->
+ <input type="radio" formControlName="options" [value]="questions[quesNum].choice1"
+ >{{questions[quesNum].choice1}} <br>
+ <input type="radio" formControlName="options" [value]="questions[quesNum].choice2"
+ >{{questions[quesNum].choice2}} <br>
+ <input type="radio" formControlName="options" [value]="questions[quesNum].choice3"
+ >{{questions[quesNum].choice3}} <br>
+ <input type="radio" formControlName="options" [value]="questions[quesNum].choice4"
+ >{{questions[quesNum].choice4}} <br>
+
+</div>
+</div>
+<input type="button" (click)="navigate()">next
+
+<input type="button" (click)="finalpage()">final 
+<!--<app-results
+(finalpage)="final()"></app-results>
+</form> -->
+
+
+
+<!--<div>
+    <input  type="radio" class="custom-input" value={{nxtchoice1}} name="options" 
+    (click)="check($event)"/>
+    <label class="custom-label" for="choice1">{{nxtchoice1}}</label> 
+ </div><br>
+ <div>-->
+ --------------------------------------
+ 
