@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.topnav {
+  overflow: hidden;
+  background-color: #336699;
+  width: 78%;
+  margin-left:10%;
+  margin-top:5px;  
+}
+
+.topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 10px 12px;
+  font-size: 17px;
+}
+.menu{
+background-color: #336699;
+color:#f2f2f2;
+font-size:14px;
+border:none;
+}
+
+.event{
+ overflow: hidden;
+  background-color: #336699;
+  width: 63%;
+ margin-left:18%;
+}
+.event a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 10px 12px;
+  font-size: 14px;
+}
+.btn{
+	color:#f2f2f2;
+	background-color:#336699;
+	padding: 8px 10px;
+        font-size: 14px;
+	border-radius:5px;
+	border:none;
+
+}
+#tab{ border-collapse:collapse;}
+#tab td, #tab th{
+      border: 1px solid #ddd;
+	padding: 6px;
+      }
+.up{
+        color: white;
+        background-color: #ffbf00;
+	border-radius: 5px;
+        padding: 6px 8px;
+	border:none;
+    }
+    .del
+    {  
+        color:white;
+        background-color: red;
+	border-radius: 5px;
+padding: 6px 8px;
+	border:none;
+    }
+.show{
+	padding-left:19%;
+   }
+
+.search{
+
+       display:inline-block;
+       padding-left: 39%;
+
+                           
+}
+
+.btn-group button {
+  background-color: white; 
+  border: 1px solid black;
+  border-radius:2px; 
+  color: black; 
+  padding: 6px 17px; 
+  float: left; 
+
+}
+#drop{ width:60px;
+height:25px;
+   border-radius:3px;}
+ 
+.sear
+{ display:inline-block;
+width:80;
+padding-left:37%;}
+
+
+
+</style>
+</head>
+<body>
+
+<div class="topnav">
+  <a class="active">Dashboard</a>
+  <a><select class="menu">
+   <option>Menu</option></select></a>
+  </div>
+
+<br>
+
+<div class="event">
+	<a>Event</a>
+</div><br>
+
+<div> 
+	<center><button class="btn">Add Event</button></center>
+</div><br>
+
+<div>
+	<label class="show">Show</label>
+	<select id="drop"><option>10</option><select>
+	<label>entries</label>
+	<p class="sear">Search: <input  style="border-radius:3px" type="text"></p>
+</div>
+
+
+<div>
+	<table id="tab" align="center" width="960">
+  
+        <tr align="left" style="border-bottom:2px #336699 solid">
+        <th><strong>#</strong></th>
+	<th>Name</th>
+	<th>Create Date</th>
+	<th>Event Start</th>
+	<th>Event End</th>
+	<th>Status</th>
+	<th>Edit</th>
+	<th>Delete</th>
+       </tr>
+
+         <tr style="background-color:#f2f2f2">
+	 <td>7</td>
+	 <td>Expo Keok</td>
+	 <td >2017-10-03 22:03:56</td>
+	 <td>2017-10-5 07:00:00</td>
+	 <td>2017-10-11 21:00:00</td>
+	 <td>Inactive</td>
+	 <td><button class="up">Update</button></td>
+	 <td><button class="del">Delete</button></td></tr>
+
+ 	<tr>
+            <td>4</td>
+            <td>Expo Tuak</td>
+            <td >2017-10-03 19:40:17</td>
+            <td>2017-10-11 08:00:00</td>
+            <td>2017-10-20 23:00:00</td>
+            <td>Active</td>
+            <td><button class="up">Update</button></td>
+            <td><button class="del">Delete</button></td>
+          </tr>
+            
+          <tr style="background-color:#f2f2f2">
+            <td>3</td>
+            <td>Expo Viaja</td>
+            <td >2017-09-02 13:43:44</td>
+            <td>2017-10-12 07:24:00</td>
+            <td>2017-12-11 23:59:59</td>
+            <td>Active</td>
+            <td><button class="up">Update</button></td>
+            <td><button class="del">Delete</button></td>
+          </tr>
+            
+          <tr>
+            <td>2</td>
+            <td>Expo Vochomaina</td>
+            <td >2016-09-02 13:43:44</td>
+            <td>2016-5-9 07:00:00</td>
+            <td>2016-05-11 23:59:59</td>
+            <td>Active</td>
+            <td><button class="up">Update</button></td>
+            <td><button class="del">Delete</button></td>
+          </tr>
+            
+            </table>
+
+      </div>
+<br>
+
+<div> 
+	<label class="show">Show 1 to 4 of 4 items</label>
+        <div class="search btn-group">
+  	<button>Previous</button>
+  	<button style="background-color:#336699">1</button>
+  	<button>Next</button>
+</div>
+
+</div>
+
+
+</body>
+</html>
