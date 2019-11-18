@@ -1,0 +1,206 @@
+<html>
+<head>
+<style>
+
+.topnav{
+color:white;
+background-color:#336699;
+height:35px;
+width: 65%;
+margin-left: 18%;
+
+
+}
+.event{
+
+color:white;
+background-color:#336699;
+width: 55%;
+height:30px;
+margin-left: 23%;
+
+
+}
+
+.nav-right{
+float:right;
+}
+.btn{
+color:white;
+background-color:#336699;
+height: 30px;
+border-radius:5px;
+border:none;
+
+
+}
+
+.up{
+        color: white;
+        background-color: #ffbf00;
+		border-radius: 5px;
+		border:none;
+    }
+    .del
+    {  
+        color:white;
+        background-color: red;
+		border-radius: 5px;
+		border:none;
+    }
+.bb{
+padding-left:23%;
+}
+
+.aa{
+
+   display:inline-block;
+   padding-left: 35%;
+}
+.lp{
+background-color: #f2f2f2;
+}
+#tab{
+  border-collapse: collapse;
+  }
+  
+#tab td, #tab th{
+  border: 1px solid #ddd;
+   padding: 8px;
+   
+}
+.menu{
+background-color:#336699;
+border-color:#336699;
+padding-left: 6px;
+color: white;
+}
+.for{
+border:1px solid;
+background-color: white;
+color:black;
+}
+
+
+</style>
+</head>
+
+<body>
+
+<div class="topnav">
+<a>Dashboard</a>
+<select class="menu">
+<option value="Menu">Menu</option>
+<option value=""></option></select>
+
+</div>
+<br>
+
+<div class="event"> 
+<a class="active">Event</a>
+</div>
+<br>
+<div> 
+<center><button class="btn">Add Event</button></center>
+</div>
+
+
+<div> 
+<nav>
+<label class="bb">Show</label>
+<select>
+<option>10</option>
+<option>2</option>
+<option>3</option>
+<option>4</option>
+<option>5</option>
+<option>1</option></select>
+<label>entries</label>
+<p class="aa">Search: <input  type="text"></p>
+</nav>
+
+</div>
+
+<div>
+<table id="tab" align="center" width="900">
+
+<tr align="left">
+
+<th><strong>#</strong></th>
+<th>Name</th>
+<th>Create Date</th>
+<th>Event Start</th>
+<th>Event End</th>
+<th>Status</th>
+<th>Edit</th>
+<th>Delete</th>
+
+</tr>
+
+<tr class="lp">
+<td >7</td>
+<td>Expo Keok</td>
+<td >2017-10-03 22:03:56</td>
+<td>2017-10-5 07:00:00</td>
+<td>2017-10-11 21:00:00</td>
+<td>Inactive</td>
+<td><button class="up btn btn-primary">Update</button></td>
+<td><button class="del btn btn-primary">Delete</button></td></tr>
+ <tr>
+            <td>4</td>
+            <td>Expo Tuak</td>
+            <td >2017-10-03 19:40:17</td>
+            <td>2017-10-11 08:00:00</td>
+            <td>2017-10-20 23:00:00</td>
+            <td>Active</td>
+            <td><button class="up btn btn-primary">Update</button></td>
+            <td><button class="del btn btn-primary">Delete</button></td>
+          </tr>
+            
+          <tr class="lp">
+            <td>3</td>
+            <td>Expo Viaja</td>
+            <td >2017-09-02 13:43:44</td>
+            <td>2017-10-12 07:24:00</td>
+            <td>2017-12-11 23:59:59</td>
+            <td>Active</td>
+            <td><button class="up btn btn-primary">Update</button></td>
+            <td><button class="del btn btn-primary">Delete</button></td>
+          </tr>
+            
+          <tr>
+            <td>2</td>
+            <td>Expo Vochomaina</td>
+            <td >2016-09-02 13:43:44</td>
+            <td>2016-5-9 07:00:00</td>
+            <td>2016-05-11 23:59:59</td>
+            <td>Active</td>
+            <td><button class="up btn btn-primary">Update</button></td>
+            <td><button class="del btn btn-primary">Delete</button></td>
+          </tr>
+            
+            </table>
+
+      </div>
+ 
+ 
+<div> 
+<nav>
+<label class="bb">Show 1 to 4 of 4 items</label>
+
+<p class="aa"><input type="button" class=" for btn btn-primary" value="Previous">
+              <input type="button" class="btn btn-primary" value="1">
+			  <input type="button"  class="for btn btn-primary" value="Next"></p>
+</nav>
+
+</div>
+        
+
+
+ 
+          
+            
+           
+</body>
+
+</html>
