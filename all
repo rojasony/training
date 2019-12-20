@@ -1,0 +1,340 @@
+<html>
+<body>
+<p id="demo"></p>
+
+<script>
+var employeeArray = [{"id":"1","employee_name":"bappi gillu","employee_salary":"2147483647","employee_age":"61","profile_image":""},
+{"id":"2","employee_name":"sandeep reddy","employee_salary":"25007","employee_age":"27","profile_image":""},
+{"id":"3","employee_name":"rogue_now","employee_salary":"27888","employee_age":"26","profile_image":""},
+{"id":"4","employee_name":"CodeME-TEST","employee_salary":"123","employee_age":"23","profile_image":""},
+{"id":"5","employee_name":"hello 123456","employee_salary":"5 0000","employee_age":"26","profile_image":""},
+{"id":"6","employee_name":"Donold Cerrone","employee_salary":"22322","employee_age":"36","profile_image":""},
+{"id":"7","employee_name":" tst2 ","employee_salary":"35000","employee_age":"27","profile_image":""},
+{"id":"8","employee_name":" test111 ","employee_salary":"123","employee_age":"23","profile_image":""},
+{"id":"9","employee_name":" madhukar reddy","employee_salary":"34222","employee_age":"52","profile_image":""},
+{"id":"10","employee_name":"gd","employee_salary":" 0","employee_age":"59","profile_image":""},
+{"id":"11","employee_name":"ekesh","employee_salary":"123","employee_age":"23","profile_image":""},
+{"id":"11","employee_name":"x","employee_salary":"0","employee_age":"54","profile_image":""}];
+
+
+//2.	Create a function CalculateSalary() to Calculate total salary using Array.reduce()
+var salary = employeeArray.map(function(d) { return d.employee_salary; });
+console.log(salary);
+
+var ints= salary.map(parseFloat);
+console.log(ints);
+
+var Sum = ints.reduce( function CalculateSalary(sum, d) {
+  return sum + d;
+});
+console.log(Sum);
+/* ----3.	Create a function filterEmployee() to Filter employee above 60 Years--------------*/
+var filteremp = employeeArray.filter(function filterEmployee(d){
+ return d.employee_age>60;
+});
+console.log(filteremp);
+/*---4.	Create a function to Add a new employee detail into existing array--------------------*/
+
+var newEmp= employeeArray.push({"id":"12","employee_name":"xyz","employee_salary":"0","employee_age":"56","profile_image":""});
+  console.log(newEmp);
+  console.log(JSON.stringify(employeeArray));
+
+  <!---5.	Delete employee having duplicate employee id---->
+var clean = employeeArray.filter((employeeArray, index, self) =>
+    index === self.findIndex((t) => (t.id === employeeArray.id )))
+
+console.log(clean);
+/*---6.	Use Map to increate salary from currentSalary+10000 for employee whose age is above 50-----*/
+var newsal = employeeArray.filter(d => d.employee_age > 50 ).map(d => ({"id" : d.id, "employee_name" :d.employee_name,
+"employee_age":d.employee_age,"employee_salary":parseInt(d.employee_salary )+10000,"profile_image":d.profile_image}));
+	console.log(newsal);
+/*--7.	Get two arguments for a function getName(firstName, lastName) as input  – use string function to concatenate both
+ firstName and lastName and return as output------------------------------------*/
+
+function getName(firstName, lastName){
+  return firstName.concat(lastName);
+}
+var fullname = getName("Brad", "Pitt");
+
+console.log(fullname)
+
+/*---8.	Write a function getEmployeeDetails(employeeName)to return all employees having name with contains 
+employeeName in their name--- */
+function getEmployeeDetails(employeeName){
+   return employeeArray.filter( (args) =>
+   {
+    return args['employee_name'].includes(employeeName);
+	});
+}
+
+console.log(getEmployeeDetails('reddy'));
+/*-9.	For each item in employee array, call a method to remove white spaces in employeeName and Salary--*/
+
+var employeename = employeeArray.map((args) =>
+{
+return removeSpaces(args['employee_name']);
+});
+var employeesal = employeeArray.map((args) =>
+{
+return removeSpaces(args['employee_salary']);
+});
+
+function removeSpaces(val){
+return val.replace(/\s/g, "");   
+} 
+
+console.log(employeename);
+console.log(employeesal);
+document.getElementById("demo").innerHTML = employeename;
+
+</script>
+
+</body>
+</html>
+
+
+-----------------------------------------------
+
+second
+
+<html>
+    <body onload="myFunc()">
+        <form id="basicform" >
+            ID: <input type="text" id="ID" name ="ID" oninput=" return validateNumber(this)"><br><br>
+            Firstname:<input type="text" id="fname" name="firstname" oninput="return validateChar(this)"><br><br>
+            Lastname:<input type="text" id="lname" name="lastname" oninput="return validateChar(this)"><br><br>
+            Salary:<input type="text" id="salary" name="salary" oninput=" return ValidSalary()"><br><br>
+            DOB: <input type="text" id="dob" name="dob" oninput="return Age()"><br><br> 
+			
+		  <div id='reset'></div>
+         </form>
+		 <p id="demo"></p>
+		 <button  onclick="myFunction()">Submit</button>
+		 
+		 
+        <button onclick="getEmployeedetails()">Get Employee Details</button>
+
+        <script>
+var employeeArray = [{"id":"1","employee_name":"bappi gillu","employee_salary":"2147483647","employee_age":"61","profile_image":""},
+{"id":"2","employee_name":"sandeep reddy","employee_salary":"25007","employee_age":"27","profile_image":""},
+{"id":"3","employee_name":"rogue_now","employee_salary":"27888","employee_age":"26","profile_image":""},
+{"id":"4","employee_name":"CodeME-TEST","employee_salary":"123","employee_age":"23","profile_image":""},
+{"id":"5","employee_name":"hello 123456","employee_salary":"5 0000","employee_age":"26","profile_image":""},
+{"id":"6","employee_name":"Donold Cerrone","employee_salary":"22322","employee_age":"36","profile_image":""},
+{"id":"7","employee_name":" tst2 ","employee_salary":"35000","employee_age":"27","profile_image":""},
+{"id":"8","employee_name":" test111 ","employee_salary":"123","employee_age":"23","profile_image":""},
+{"id":"9","employee_name":" madhukar reddy","employee_salary":"34222","employee_age":"52","profile_image":""},
+{"id":"10","employee_name":"gd","employee_salary":" 0","employee_age":"59","profile_image":""},
+{"id":"11","employee_name":"ekesh","employee_salary":"123","employee_age":"23","profile_image":""},
+{"id":"11","employee_name":"x","employee_salary":"0","employee_age":"54","profile_image":""}];
+
+		// 2.	Use Regex to allow only numeric values for ID
+		
+		   var idfield = document.getElementById("ID").value;
+           var validNumber = new RegExp(/^\d*\.?\d*$/);
+        function validateNumber(elem) {
+           if( validNumber.test(elem.value) ) {
+           idfield = elem.value;
+		  } else {
+		  elem.value = idfield; }
+   } 
+     //3.	Use regex to allow only alphabets for firstname and lastname   
+      var textfield =document.getElementById("fname").value;
+	  var ValidChar = new RegExp(/^[a-zA-Z]+$/);
+	  function validateChar(elem){
+	     if (ValidChar.test(elem.value)){
+		    textfield = elem.value; }
+			else { elem.value = textfield; }
+			}
+			
+	 var textfield =document.getElementById("lname").value;
+	  var ValidChar = new RegExp(/^[a-zA-Z]+$/);
+	  function validateChar(elem){
+	     if (ValidChar.test(elem.value)){
+		    textfield = elem.value; }
+			else { elem.value = textfield; }
+			}
+//4.Use getName(firstName, lastName) method created in the last exercise to form employee_name	
+
+
+/*5.	Use Regex for salary to be numeric
+6.	Don’t allow user to enter salary more than 1 Lakh */
+	
+  /* var salfield =document.getElementById("salary").value;
+	  var ValidSal = new RegExp(/^\d*\.?\d*$/);
+	  function validateNum(elem){
+	     if (ValidSal.test(elem.value)){
+		   if(ValidSal <= 100000) {
+		    salfield = elem.value; 
+			console.log("val is"+ salfield);}
+			}
+			else { elem.value = salfield;
+             console.log(elem.value);			}
+			}*/
+			 function ValidSalary(){
+         var salary = document.getElementById("salary").value
+            var pattern = /^\d+$/; 
+            if (salary.match(pattern)) {
+                if (parseInt(salary) <= 100000) {
+                    return true;
+                } else {
+                    alert("Salary should be within 1 Lakh")
+                }
+                return true;
+            } else {
+                alert("Only numbers are allowed")
+            }
+        }
+			
+//7.	Write a method to calculate age based on DOB
+function Age()
+{
+var dobfield = document.getElementById("dob").value;
+console.log(dobfield);
+  var vals = dobfield.split('/');
+   var day = vals[0];
+   var month = vals[1];
+   var year = vals[2];
+   console.log(day, month, year);
+console.log(year);
+var now = new Date();
+console.log(now);
+tyr=(now.getFullYear());
+console.log(tyr);
+var age = (tyr-year);
+console.log(age);
+}
+//document.getElementById("demo").innerHTML = Age();
+/*---8.	On Click of submit in the form – create the employee object to hold the following data
+{id: ‘’, employee_name : firstname+lastname without space in the beginning and end, employee_salary : ‘10000’,employee_age : ‘50’}
+9.	On click of submit show the above object in the confirmation box
+*/
+function myFunction() {
+    var elements = document.getElementById("basicform").elements;
+	var fname=document.getElementById('fname').value;
+	var lname= document.getElementById('lname').value;
+	function getName(firstName, lastName){
+        return firstName.concat(lastName);
+}
+var empname = getName(fname, lname);
+
+console.log(empname);
+	
+    var obj ={};
+    for(var i = 0 ; i < elements.length ; i++){
+        var item = elements.item(i);
+	
+        obj[item.name] = item.value;
+    }
+
+    document.getElementById("demo").innerHTML = JSON.stringify(obj);
+	window.confirm(JSON.stringify(obj));
+	console.log(obj);
+}
+/*10.	Create one more button reset to reset the
+ form data (Create this using JavaScript inside onload method) */
+function myFunc(){
+	var btn = document.createElement("INPUT");
+	btn.setAttribute("type","reset")
+	var node = document.createTextNode("Reset");
+	btn.appendChild(node);
+	var ele=document.getElementById('reset')
+	ele.appendChild(btn);
+}
+ /*3.	On click of “Get Employee details” if no employee id is entered then show error message
+4.	When user enters employee id and click on “Get Employee Details”, call the method in point 1 to show the data in the form. Use promise when implementing it. */
+
+/*function getEmployeedetails(){
+var idvalue = document.getElementById("ID").value;
+console.log(idvalue);
+if (idvalue === id){
+  return employeeArray.get(id);
+  }
+  else {
+   return "Error"
+   }
+
+
+}*/
+
+	   
+	  
+   
+	   </script>
+    </body>
+
+</html>
+----------------------------------------------------
+
+third
+
+<html>
+<body>
+<p id="demo"></p>
+ ID: <input type="text" id="ID" name ="ID">
+  <button  onclick="present()">Submit</button>
+  <br> <button onclick="NewTab()">OpenGeeks</button>
+
+<script>
+var employeeArray = [{"id":"1","employee_name":"bappi gillu","employee_salary":"2147483647","employee_age":"61","profile_image":""},
+{"id":"2","employee_name":"sandeep reddy","employee_salary":"25007","employee_age":"27","profile_image":""},
+{"id":"3","employee_name":"rogue_now","employee_salary":"27888","employee_age":"26","profile_image":""},
+{"id":"4","employee_name":"CodeME-TEST","employee_salary":"123","employee_age":"23","profile_image":""},
+{"id":"5","employee_name":"hello 123456","employee_salary":"5 0000","employee_age":"26","profile_image":""},
+{"id":"6","employee_name":"Donold Cerrone","employee_salary":"22322","employee_age":"36","profile_image":""},
+{"id":"7","employee_name":" tst2 ","employee_salary":"35000","employee_age":"27","profile_image":""},
+{"id":"8","employee_name":" test111 ","employee_salary":"123","employee_age":"23","profile_image":""},
+{"id":"9","employee_name":" madhukar reddy","employee_salary":"34222","employee_age":"52","profile_image":""},
+{"id":"10","employee_name":"gd","employee_salary":" 0","employee_age":"59","profile_image":""},
+{"id":"11","employee_name":"ekesh","employee_salary":"123","employee_age":"23","profile_image":""},
+{"id":"11","employee_name":"x","employee_salary":"0","employee_age":"54","profile_image":""}];
+
+let Arr= new Map();
+for (let k of employeeArray){
+  Arr.set(k.id,k);
+  }
+  console.log(Arr);
+<!--------1.	Convert employee array into map with key as employeeId --------------------------->
+for (let k of employeeArray){
+  let keyid = k.id;
+  delete k.id;
+  Arr.set(keyid,k);
+  }
+  console.log(Arr);
+  <!-----2.	Add one more data into employee Object - Company Name and have default value ('ABC')------------------------>
+  
+  for(let k of employeeArray){
+    let s= k.id;
+    delete k.id;
+    k.companyName="ABC";
+    Arr.set(s,k);
+}
+console.log(Arr);
+<!----3.	Use getName(firstName, lastName) method to have spread operator so that if we add a new field in the form like middle name.
+ //It will also be concatenated--------------------------------->
+ 
+function fullName(...args){
+    let name="";
+for (let arg of args)
+name+=arg;
+return name;
+} console.log(fullName('bappi','Hi ','gallu'));
+
+<!-----4.	on click of submit, filter map to check if emp Id is already there if yes show error if not
+// then show the JSON data of the employee in a new page ------------------------------------>
+function present(id){
+    if(Arr.get(id)){
+       return Arr.get(id);
+       }
+       else return "Error: Please enter valid id";
+       }
+console.log(present('sd'));
+
+<!-------5.	In the above task open the new page in new tab --->
+function NewTab(){
+    window.open("https://geeksforgeeks.org","_blank");
+	
+}
+</script>
+</body>
+</html>
